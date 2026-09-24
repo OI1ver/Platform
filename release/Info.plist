@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>CFBundleDevelopmentRegion</key>
+    <string>en-GB</string>
+    <key>CFBundleDisplayName</key>
+    <string>Platform</string>
+    <key>CFBundleExecutable</key>
+    <string>Platform</string>
+    <key>CFBundleIdentifier</key>
+    <string>app.platform.Platform</string>
+    <key>CFBundleIconFile</key>
+    <string>Platform.icns</string>
+    <key>CFBundleInfoDictionaryVersion</key>
+    <string>6.0</string>
+    <key>CFBundleName</key>
+    <string>Platform</string>
+    <key>CFBundlePackageType</key>
+    <string>APPL</string>
+    <key>CFBundleShortVersionString</key>
+	<string>0.2.4</string>
+    <key>CFBundleVersion</key>
+	<string>15</string>
+    <key>LSMinimumSystemVersion</key>
+    <string>14.0</string>
+    <key>LSUIElement</key>
+    <true/>
+    <key>NSHighResolutionCapable</key>
+    <true/>
+    <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsLocalNetworking</key>
+        <true/>
+    </dict>
+    <key>PlatformAPIBaseURL</key>
+    <string>http://127.0.0.1:8787</string>
+    <key>SUEnableAutomaticChecks</key>
+    <true/>
+    <key>SUFeedURL</key>
+	<string>https://github.com/OI1ver/Platform/releases/latest/download/appcast.xml</string>
+    <key>SUPublicEDKey</key>
+	<string>QNhpsRg1xxMKsSElCh8mupfE6xY/rxWzeDfE9FZznm8=</string>
+</dict>
+</plist>

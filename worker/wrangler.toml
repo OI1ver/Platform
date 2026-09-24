@@ -1,0 +1,13 @@
+name = "platform-relay"
+main = "src/index.ts"
+compatibility_date = "2026-09-01"
+
+[vars]
+RDM_API_VERSION = "20220120"
+
+# Add RATE_LIMIT and STALE_CACHE KV namespace bindings in the Cloudflare
+# dashboard before a public deployment. Secrets are configured with:
+#   npx wrangler secret put RDM_BASE_URL
+#   npx wrangler secret put RDM_API_KEY
+#   npx wrangler secret put RDM_SERVICE_BASE_URL
+#   npx wrangler secret put RDM_SERVICE_API_KEY

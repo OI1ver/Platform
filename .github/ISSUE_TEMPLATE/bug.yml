@@ -1,0 +1,57 @@
+name: Bug report
+description: Report a reproducible problem with Platform.
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: For security or privacy problems, stop and use private vulnerability reporting instead.
+  - type: input
+    id: platform-version
+    attributes:
+      label: Platform version
+      placeholder: 0.2.4 (15)
+    validations:
+      required: true
+  - type: input
+    id: macos-version
+    attributes:
+      label: macOS version
+      placeholder: macOS 15.7
+    validations:
+      required: true
+  - type: dropdown
+    id: mode
+    attributes:
+      label: Board mode
+      options: [Display, Extended, List, Service details, Settings or onboarding, Not applicable]
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Include what you expected and what appeared instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      placeholder: "1. Open Platform\n2. …"
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshots or extra context
+      description: Remove credentials and personal information before uploading.
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checklist
+      options:
+        - label: I searched existing issues and did not find this problem.
+          required: true
+        - label: This report contains no credentials or private data.
+          required: true

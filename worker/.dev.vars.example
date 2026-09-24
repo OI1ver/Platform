@@ -1,0 +1,4 @@
+RDM_BASE_URL=https://your-rdm-host.example/LDBWS/
+RDM_API_KEY=replace-me
+RDM_SERVICE_BASE_URL=https://your-rdm-service-host.example/LDBWS/
+RDM_SERVICE_API_KEY=replace-me

@@ -1,0 +1,61 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  macos:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Remove synced-folder metadata
+        run: xattr -cr Sources Tests || true
+      - name: Test macOS app
+        env:
+          COPYFILE_DISABLE: "1"
+        run: swift test --scratch-path "$RUNNER_TEMP/platform-spm"
+
+  worker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: worker/package-lock.json
+      - run: npm ci
+        working-directory: worker
+      - run: npm test
+        working-directory: worker
+      - run: npm run typecheck
+        working-directory: worker
+
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: gitleaks/gitleaks-action@v2
+
+  repository:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate repository metadata
+        run: |
+          source release/version.env
+          test "$PLATFORM_VERSION" = "0.2.4"
+          test "$PLATFORM_BUILD" = "15"
+          plutil -lint release/Info.plist
+          zsh -n scripts/package-app.sh
+          zsh -n scripts/verify-release.sh
+          test -s LICENSES/OFL-1.1.txt
+          test -s THIRD_PARTY_NOTICES.md
+          test -s docs/HISTORICAL_RELEASES.md
+          test -s docs/assets/display.png
+          test -s docs/assets/extended.png
+          test -s docs/assets/list.png
+          test -s docs/assets/service-details.png

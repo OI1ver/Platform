@@ -1,0 +1,70 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: macos-15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Load and validate release version
+        run: |
+          source release/version.env
+          test "$GITHUB_REF_NAME" = "v$PLATFORM_VERSION"
+          echo "PLATFORM_VERSION=$PLATFORM_VERSION" >> "$GITHUB_ENV"
+          echo "PLATFORM_BUILD=$PLATFORM_BUILD" >> "$GITHUB_ENV"
+
+      - name: Validate release configuration
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+          SPARKLE_PUBLIC_KEY: ${{ secrets.SPARKLE_PUBLIC_KEY }}
+          PLATFORM_API_BASE_URL: ${{ vars.PLATFORM_API_BASE_URL }}
+        run: |
+          test -n "$SPARKLE_PRIVATE_KEY"
+          test -n "$SPARKLE_PUBLIC_KEY"
+          test -n "$PLATFORM_API_BASE_URL"
+          [[ "$PLATFORM_API_BASE_URL" == https://* ]]
+
+      - name: Package universal app
+        env:
+          COPYFILE_DISABLE: "1"
+          PLATFORM_UNIVERSAL: "1"
+          PLATFORM_GITHUB_REPOSITORY: ${{ github.repository }}
+          PLATFORM_API_BASE_URL: ${{ vars.PLATFORM_API_BASE_URL }}
+          SPARKLE_PUBLIC_KEY: ${{ secrets.SPARKLE_PUBLIC_KEY }}
+        run: |
+          chmod +x scripts/package-app.sh scripts/verify-release.sh
+          scripts/package-app.sh
+          scripts/verify-release.sh Platform-macOS.zip "$PLATFORM_VERSION" "$PLATFORM_BUILD"
+
+      - name: Generate signed Sparkle appcast and checksum
+        env:
+          SPARKLE_PRIVATE_KEY: ${{ secrets.SPARKLE_PRIVATE_KEY }}
+        run: |
+          mkdir release-output
+          archive="Platform-macOS-universal-$PLATFORM_VERSION.zip"
+          cp Platform-macOS.zip "release-output/$archive"
+          echo "$SPARKLE_PRIVATE_KEY" | .build/artifacts/sparkle/Sparkle/bin/generate_appcast \
+            --ed-key-file - \
+            --download-url-prefix "https://github.com/${GITHUB_REPOSITORY}/releases/download/${GITHUB_REF_NAME}/" \
+            --link "https://github.com/${GITHUB_REPOSITORY}" \
+            release-output
+          (cd release-output && shasum -a 256 "$archive" > SHA256SUMS.txt)
+
+      - name: Publish GitHub beta
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "$GITHUB_REF_NAME" \
+            release-output/Platform-macOS-universal-"$PLATFORM_VERSION".zip \
+            release-output/appcast.xml \
+            release-output/SHA256SUMS.txt \
+            --title "Platform $PLATFORM_VERSION — GitHub Beta" \
+            --notes-file "docs/releases/$PLATFORM_VERSION.md" \
+            --latest
