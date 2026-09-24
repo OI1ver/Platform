@@ -6,7 +6,8 @@ on:
 
 jobs:
   macos:
-    runs-on: macos-26
+    # Xcode 26.6 has a confirmed Swift IRGen crash in SettingsView.
+    runs-on: xcode-27
     steps:
       - uses: actions/checkout@v7
       - name: Remove synced-folder metadata
@@ -39,9 +40,11 @@ jobs:
         with:
           fetch-depth: 0
       - uses: gitleaks/gitleaks-action@v3
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   repository:
-    runs-on: macos-26
+    runs-on: xcode-27
     steps:
       - uses: actions/checkout@v7
       - name: Validate repository metadata
