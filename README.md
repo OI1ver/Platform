@@ -1,6 +1,5 @@
 # Platform
 
-[![CI](https://github.com/OI1ver/Platform/actions/workflows/ci.yml/badge.svg)](https://github.com/OI1ver/Platform/actions/workflows/ci.yml)
 [![Latest release](https://img.shields.io/github/v/release/OI1ver/Platform?display_name=tag)](https://github.com/OI1ver/Platform/releases/latest)
 [![macOS 14+](https://img.shields.io/badge/macOS-14%2B-black)](docs/INSTALLATION.md)
 [![MIT licence](https://img.shields.io/badge/licence-MIT-green)](LICENSE)
