@@ -55,6 +55,7 @@ struct PlatformApp: App {
     }
 }
 
+@MainActor
 enum AppArtwork {
     static let menuBarImageSize = NSSize(width: 14, height: 18)
 

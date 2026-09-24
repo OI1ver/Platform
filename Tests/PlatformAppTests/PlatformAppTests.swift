@@ -171,6 +171,7 @@ final class RailAPIClientTests: XCTestCase {
     }
 }
 
+@MainActor
 final class ArtworkTests: XCTestCase {
     func testMenuBarArtworkLoadsAsTemplate() throws {
         let image = try XCTUnwrap(AppArtwork.menuBarImage)
