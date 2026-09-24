@@ -9,7 +9,9 @@ permissions:
 
 jobs:
   release:
-    runs-on: macos-26
+    # Xcode 26.6 has a confirmed Swift IRGen crash when optimising the
+    # universal x86_64 slice. Xcode 27 builds the same source successfully.
+    runs-on: xcode-27
     steps:
       - uses: actions/checkout@v7
 
