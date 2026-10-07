@@ -1,35 +1,20 @@
-# Platform
+<img width="1440" height="456" alt="Tree (3)" src="https://github.com/user-attachments/assets/11becbb1-0318-4273-9658-fc3603fed692" />
 
 [![Latest release](https://img.shields.io/github/v/release/OI1ver/Platform?display_name=tag)](https://github.com/OI1ver/Platform/releases/latest)
 [![macOS 14+](https://img.shields.io/badge/macOS-14%2B-black)](docs/INSTALLATION.md)
 [![MIT licence](https://img.shields.io/badge/licence-MIT-green)](LICENSE)
 
-Platform is a free, open-source macOS menu-bar departure board for Great
-Britain. It puts live departures, platforms, delays, cancellations and calling
-points one click away without keeping a full app window open.
+Platform is a free, open-source macOS menu-bar departure board for National Rail. It puts live departures, platforms, delays, cancellations and calling points one click away without keeping a full app window open.
 
 > **Platform is currently an unsigned technical beta.** It is distributed only
-> through GitHub—not the Mac App Store—and requires macOS 14 or later.
+> through GitHub only.
 
-## Download
+<img width="1578" height="181" alt="dowload" src="https://github.com/user-attachments/assets/0a6eea39-c337-471b-943d-c9f7751bf7f3" />
 
 Download **[Platform 0.2.4](https://github.com/OI1ver/Platform/releases/latest)**,
 unzip it and move `Platform.app` to Applications. Because the beta is not
 notarised, first launch requires macOS's control-click **Open** flow. Follow the
-[short installation guide](docs/INSTALLATION.md); never disable Gatekeeper
-globally.
-
-## The board
-
-| Display | Extended | List |
-| --- | --- | --- |
-| ![Display mode](docs/assets/display.png) | ![Extended mode](docs/assets/extended.png) | ![List mode](docs/assets/list.png) |
-| The next departure at a glance. | Four departures plus station notices. | Up to nine departures in a compact table. |
-
-Selecting a service opens its operator, route and ordered calling points in the
-same menu-bar panel.
-
-![Service details and calling points](docs/assets/service-details.png)
+[short installation guide](docs/INSTALLATION.md) for assistance with installation.
 
 ## Features
 
