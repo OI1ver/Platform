@@ -4,80 +4,57 @@
 [![macOS 14+](https://img.shields.io/badge/macOS-14%2B-black)](docs/INSTALLATION.md)
 [![MIT licence](https://img.shields.io/badge/licence-MIT-green)](LICENSE)
 
-Platform is a free, open-source macOS menu-bar departure board for National Rail. It puts live departures, platforms, delays, cancellations and calling points one click away without keeping a full app window open.
+**Platform puts live UK train departures in your Mac’s menu bar.**
 
-> **Platform is currently an unsigned technical beta.** It is distributed only
-> through GitHub only.
+Open it whenever you need it, choose your station and immediately see the next trains, departure times, platforms, delays and cancellations. There is no full application window to keep open and no account to create.
 
-<img width="1578" height="181" alt="dowload" src="https://github.com/user-attachments/assets/0a6eea39-c337-471b-943d-c9f7751bf7f3" />
+---
+<img width="1578" height="181" alt="dowload (1)" src="https://github.com/user-attachments/assets/2242f718-dcef-49bc-9157-c04af0688635" />
 
-Download **[Platform 0.2.4](https://github.com/OI1ver/Platform/releases/latest)**,
-unzip it and move `Platform.app` to Applications. Because the beta is not
-notarised, first launch requires macOS's control-click **Open** flow. Follow the
-[short installation guide](docs/INSTALLATION.md) for assistance with installation.
+**Download the latest version of Platform for macOS.**
+Platform requires macOS 14 or later.
+1. Download and unzip the latest release.
+2. Move Platform.app into your Applications folder.
+3. Control-click Platform and select Open the first time you launch it.
 
-## Features
+Platform is currently unsigned, so macOS will ask you to confirm that you want to open it. The installation guide includes step-by-step help.
 
-- Native SwiftUI menu-bar app with no Dock icon
-- Search across 2,700+ Darwin-supported stations
-- Multiple favourites with a configurable default station
-- Display, Extended and List board modes
-- Live platforms, expected times, cancellation and disruption information
-- Calling points and service details
-- Explicit loading, no-service, stale, offline and upstream-error states
-- Local last-known-board cache and refresh only while the board is visible
-- Keyboard navigation, VoiceOver labels and reduced-motion behaviour
-- Local preferences, Keychain installation ID and optional launch at login
-- No accounts, analytics, advertising or ticket sales
+---
+<img width="1578" height="181" alt="dowload (2)" src="https://github.com/user-attachments/assets/4618681c-c85e-4b54-92ad-11b60f9c045c" />
 
-Read the [privacy summary](docs/PRIVACY.md) for the small amount of information
-stored or sent by the app.
+**Platform lives in the menu bar and stays out of the way until you need it.**
+You can:
+- Search for and save your favourite stations.
+- Switch between stations without leaving the departure board.
+- See scheduled and expected departure times.
+- Check platforms, delays, cancellations and disruption information.
+- Open a service to see its calling points and live progress.
+- Refresh the board manually whenever you want.
+- Continue viewing the latest available board if your connection is interrupted.
 
-## How it works
+Platform only refreshes while its board is open.
 
-The repository is a monorepo containing:
+---
+<img width="1578" height="181" alt="dowload (3)" src="https://github.com/user-attachments/assets/588606b0-a3f5-4a64-b715-d038628f6d1c" />
 
-```text
-Sources/PlatformApp/   Native macOS client
-Tests/                 Swift unit tests
-worker/                Cloudflare Worker relay and tests
-docs/                  User, API and contributor documentation
-scripts/               Station, packaging and release verification tools
-```
+Platform can check for new releases and install updates from this GitHub repository. Updates are cryptographically signed so the app can verify that they are genuine before installing them.
 
-The client calls a narrowly scoped Cloudflare Worker. The Worker holds Rail
-Data Marketplace credentials, validates requests and normalises National
-Rail's Darwin Live Departure Boards data. Credentials are never shipped in the
-app or committed to this repository.
+Because the current release is an unsigned beta, it is intended for people who are comfortable installing software directly from GitHub.
 
-## Build and contribute
+---
+<img width="1578" height="181" alt="dowload (4)" src="https://github.com/user-attachments/assets/9b64a120-16ef-49e9-81fc-968f769128bc" />
 
-Requirements are macOS 14+, Xcode 16 or newer, Swift 6, Node.js and npm.
+If something is not working correctly, **report a problem.**
 
-Start with the [development guide](docs/DEVELOPMENT.md), then read
-[CONTRIBUTING.md](CONTRIBUTING.md) before opening a pull request. The relay
-contract is documented in [docs/api.md](docs/api.md).
+Ideas and feature suggestions are welcome too. Before opening a new request, please check the existing issues to see whether it has already been discussed.
 
-Security issues must be reported privately as described in
-[SECURITY.md](SECURITY.md), not through a public issue.
+Security concerns should be reported privately by following the instructions in SECURITY.md.
 
-## Releases and history
+---
+<img width="1578" height="181" alt="dowload (5)" src="https://github.com/user-attachments/assets/8cc09388-34fb-4687-a2e9-638311148a9c" />
 
-The exact source tree is retained from 0.2.4 onward. Installers for 0.1.0–0.2.3
-survive as clearly labelled historical binary releases; their original source
-snapshots were not retained. See the [changelog](CHANGELOG.md) and
-[historical-release manifest](docs/HISTORICAL_RELEASES.md).
+Platform is free and open-source software. Developers interested in building or contributing can read the development guide and contribution guide.
 
-Updates are delivered through Sparkle and signed with a separately protected
-EdDSA key. This protects update integrity independently of Apple Developer ID
-signing.
+Live railway information is supplied by National Rail through Darwin. Platform is not affiliated with or endorsed by National Rail.
 
-## Data, attribution and licence
-
-Live rail data is provided by National Rail through Darwin and remains subject
-to the terms accepted through Rail Data Marketplace. Platform retains the
-required National Rail attribution in the app.
-
-Platform source code is available under the [MIT License](LICENSE). The bundled
-London Underground dot-matrix typeface is separately licensed under the SIL
-Open Font License 1.1; see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+Platform is released under the MIT Licence. The bundled London Underground dot-matrix typeface is covered separately by the SIL Open Font License 1.1; details are available in THIRD_PARTY_NOTICES.md.
