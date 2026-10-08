@@ -1,32 +1,73 @@
-import ServiceManagement
+import AppKit
 import SwiftUI
 
 struct SettingsView: View {
     @ObservedObject var preferences: PreferencesStore
     @ObservedObject var updates: UpdateController
     let catalog: StationCatalog
+    @ObservedObject var navigation: SettingsNavigation
+    @ObservedObject var launchAtLogin: LaunchAtLoginController
 
     @State private var isAddingStation = false
-    @State private var launchAtLogin = SMAppService.mainApp.status == .enabled
-    @State private var launchError: String?
 
     var body: some View {
-        TabView {
-            stationsTab
-                .tabItem { Label("Stations", systemImage: "tram.fill") }
-            generalTab
-                .tabItem { Label("General", systemImage: "gearshape") }
-            aboutTab
-                .tabItem { Label("About", systemImage: "info.circle") }
+        VStack(spacing: 0) {
+            settingsNavigation
+            Divider().overlay(AppTheme.border)
+            selectedPage
         }
         .frame(width: 520, height: 390)
-        .padding(12)
         .background(AppTheme.canvas)
         .preferredColorScheme(.dark)
         .sheet(isPresented: $isAddingStation) {
             StationSearchView(catalog: catalog, existing: Set(preferences.favourites)) {
                 preferences.add($0)
             }
+        }
+        .onAppear { launchAtLogin.refresh() }
+        .onReceive(NotificationCenter.default.publisher(for: NSApplication.didBecomeActiveNotification)) { _ in
+            launchAtLogin.refresh()
+        }
+    }
+
+    private var settingsNavigation: some View {
+        HStack(spacing: 14) {
+            ForEach(SettingsPage.allCases) { page in
+                Button {
+                    navigation.selection = page
+                } label: {
+                    VStack(spacing: 5) {
+                        Image(systemName: page.symbol)
+                            .font(.system(size: 25, weight: .medium))
+                        Text(page.title)
+                            .font(.callout.weight(.medium))
+                    }
+                    .foregroundStyle(navigation.selection == page ? Color.accentColor : AppTheme.secondaryText)
+                    .frame(width: 92, height: 66)
+                    .background(
+                        RoundedRectangle(cornerRadius: 10, style: .continuous)
+                            .fill(navigation.selection == page ? Color.white.opacity(0.09) : Color.clear)
+                    )
+                    .contentShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+                }
+                .buttonStyle(.plain)
+                .accessibilityLabel(page.title)
+                .accessibilityAddTraits(navigation.selection == page ? .isSelected : [])
+            }
+        }
+        .frame(maxWidth: .infinity)
+        .padding(.vertical, 12)
+    }
+
+    @ViewBuilder
+    private var selectedPage: some View {
+        switch navigation.selection {
+        case .stations:
+            stationsTab
+        case .general:
+            generalTab
+        case .about:
+            aboutTab
         }
     }
 
@@ -91,11 +132,26 @@ struct SettingsView: View {
             Button("Check for Updates…") { updates.checkForUpdates() }
                 .disabled(!updates.isConfigured)
             Toggle("Open Platform when I log in", isOn: Binding(
-                get: { launchAtLogin },
-                set: setLaunchAtLogin
+                get: { launchAtLogin.isRequested },
+                set: launchAtLogin.setEnabled
             ))
 
-            if let launchError {
+            if launchAtLogin.state == .requiresApproval {
+                VStack(alignment: .leading, spacing: 8) {
+                    Label("Approval is required in System Settings before Platform can open at login.", systemImage: "exclamationmark.triangle.fill")
+                    Button("Open Login Items Settings") {
+                        launchAtLogin.openLoginItemSettings()
+                    }
+                }
+                .font(.caption)
+                .foregroundStyle(AppTheme.warning)
+            } else if launchAtLogin.state == .unavailable {
+                Label("Launch at login is available from the packaged Platform application.", systemImage: "exclamationmark.triangle.fill")
+                    .font(.caption)
+                    .foregroundStyle(AppTheme.warning)
+            }
+
+            if let launchError = launchAtLogin.errorMessage {
                 Label(launchError, systemImage: "exclamationmark.triangle.fill")
                     .font(.caption)
                     .foregroundStyle(AppTheme.warning)
@@ -120,9 +176,7 @@ struct SettingsView: View {
 
     private var aboutTab: some View {
         VStack(spacing: 12) {
-            Image(systemName: "train.side.front.car")
-                .font(.system(size: 44))
-                .foregroundStyle(AppTheme.accent)
+            platformIcon(size: 74)
             Text("Platform").font(.title2.weight(.bold))
             Text("Open-source live UK train departures in your menu bar.")
                 .foregroundStyle(AppTheme.secondaryText)
@@ -138,18 +192,19 @@ struct SettingsView: View {
         .padding(30)
     }
 
-    private func setLaunchAtLogin(_ enabled: Bool) {
-        do {
-            if enabled {
-                try SMAppService.mainApp.register()
-            } else {
-                try SMAppService.mainApp.unregister()
-            }
-            launchAtLogin = enabled
-            launchError = nil
-        } catch {
-            launchAtLogin = SMAppService.mainApp.status == .enabled
-            launchError = "Launch at login is available from the packaged app."
+    @ViewBuilder
+    private func platformIcon(size: CGFloat) -> some View {
+        if let icon = AppArtwork.appIconImage {
+            Image(nsImage: icon)
+                .resizable()
+                .interpolation(.high)
+                .frame(width: size, height: size)
+                .clipShape(RoundedRectangle(cornerRadius: size * 0.2, style: .continuous))
+                .accessibilityLabel("Platform")
+        } else {
+            Image(systemName: "train.side.front.car")
+                .font(.system(size: size * 0.58))
+                .foregroundStyle(AppTheme.accent)
         }
     }
 }

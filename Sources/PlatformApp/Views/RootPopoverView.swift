@@ -4,6 +4,7 @@ struct RootPopoverView: View {
     @ObservedObject var preferences: PreferencesStore
     @ObservedObject var store: BoardStore
     let catalog: StationCatalog
+    let openSettingsPage: (SettingsPage) -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -32,17 +33,16 @@ struct RootPopoverView: View {
                         )
                     )
             } else {
-                BoardModeContainerView(preferences: preferences, store: store, catalog: catalog)
+                BoardModeContainerView(
+                    preferences: preferences,
+                    store: store,
+                    catalog: catalog,
+                    openSettingsPage: openSettingsPage
+                )
             }
         }
         .foregroundStyle(AppTheme.text)
         .preferredColorScheme(.dark)
-        .onAppear {
-            store.appear(station: preferences.activeStation, automaticRefresh: preferences.automaticRefresh)
-        }
-        .onDisappear {
-            store.disappear()
-        }
         .onChange(of: preferences.activeCRS) {
             Task { await store.changeStation(to: preferences.activeStation) }
         }

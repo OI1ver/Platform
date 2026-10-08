@@ -1,5 +1,6 @@
 import AppKit
 import Foundation
+import ServiceManagement
 import XCTest
 @testable import PlatformApp
 
@@ -177,6 +178,97 @@ final class ArtworkTests: XCTestCase {
         let image = try XCTUnwrap(AppArtwork.menuBarImage)
         XCTAssertTrue(image.isTemplate)
         XCTAssertEqual(image.size, AppArtwork.menuBarImageSize)
+    }
+
+    func testAboutArtworkLoadsFromBundledResources() {
+        XCTAssertNotNil(AppArtwork.appIconImage)
+    }
+}
+
+final class StatusPanelLayoutTests: XCTestCase {
+    func testPanelOpensToRightOfStatusItemWhenThereIsRoom() {
+        let frame = StatusPanelLayout.frame(
+            anchorRect: CGRect(x: 800, y: 900, width: 24, height: 24),
+            panelSize: CGSize(width: 488, height: 315),
+            visibleScreenFrame: CGRect(x: 0, y: 0, width: 1440, height: 900)
+        )
+
+        XCTAssertEqual(frame.minX, 800)
+        XCTAssertEqual(frame.maxY, 896)
+    }
+
+    func testPanelStaysAgainstRightScreenEdgeWhenSpaceIsLimited() {
+        let frame = StatusPanelLayout.frame(
+            anchorRect: CGRect(x: 1_100, y: 900, width: 24, height: 24),
+            panelSize: CGSize(width: 488, height: 610),
+            visibleScreenFrame: CGRect(x: 0, y: 0, width: 1440, height: 900)
+        )
+
+        XCTAssertEqual(frame.minX, 944)
+        XCTAssertEqual(frame.maxX, 1_432)
+    }
+
+    func testPanelIsClampedInsideVisibleScreenVertically() {
+        let frame = StatusPanelLayout.frame(
+            anchorRect: CGRect(x: 100, y: 200, width: 24, height: 24),
+            panelSize: CGSize(width: 488, height: 610),
+            visibleScreenFrame: CGRect(x: 0, y: 50, width: 1440, height: 850)
+        )
+
+        XCTAssertEqual(frame.minY, 58)
+    }
+}
+
+@MainActor
+final class StatusContextMenuTests: XCTestCase {
+    func testRightClickMenuExposesExpectedApplicationActions() {
+        let menu = StatusItemController().makeContextMenu()
+
+        XCTAssertEqual(
+            menu.items.filter { !$0.isSeparatorItem }.map(\.title),
+            [
+                "Open Platform",
+                "Refresh Departures",
+                "Settings…",
+                "About Platform",
+                "Restart Platform",
+                "Quit Platform",
+            ]
+        )
+        XCTAssertTrue(menu.items.filter { !$0.isSeparatorItem }.allSatisfy(\.isEnabled))
+    }
+}
+
+@MainActor
+final class LaunchAtLoginControllerTests: XCTestCase {
+    func testRequiresApprovalRemainsRequestedAndIsReportedClearly() {
+        let service = LoginItemServiceStub(status: .requiresApproval)
+        let controller = LaunchAtLoginController(service: service)
+
+        XCTAssertEqual(controller.state, .requiresApproval)
+        XCTAssertTrue(controller.isRequested)
+    }
+
+    func testEnablingRegistersMainApplication() {
+        let service = LoginItemServiceStub(status: .notRegistered)
+        let controller = LaunchAtLoginController(service: service)
+
+        controller.setEnabled(true)
+
+        XCTAssertEqual(service.registerCount, 1)
+        XCTAssertEqual(controller.state, .enabled)
+        XCTAssertTrue(controller.isRequested)
+    }
+
+    func testDisablingUnregistersMainApplication() {
+        let service = LoginItemServiceStub(status: .enabled)
+        let controller = LaunchAtLoginController(service: service)
+
+        controller.setEnabled(false)
+
+        XCTAssertEqual(service.unregisterCount, 1)
+        XCTAssertEqual(controller.state, .disabled)
+        XCTAssertFalse(controller.isRequested)
     }
 }
 
@@ -618,4 +710,24 @@ private final class URLProtocolStub: URLProtocol, @unchecked Sendable {
     }
 
     override func stopLoading() {}
+}
+
+private final class LoginItemServiceStub: LoginItemServiceProviding {
+    var status: SMAppService.Status
+    private(set) var registerCount = 0
+    private(set) var unregisterCount = 0
+
+    init(status: SMAppService.Status) {
+        self.status = status
+    }
+
+    func register() throws {
+        registerCount += 1
+        status = .enabled
+    }
+
+    func unregister() throws {
+        unregisterCount += 1
+        status = .notRegistered
+    }
 }

@@ -3,9 +3,12 @@ import SwiftUI
 
 @main
 struct PlatformApp: App {
+    @NSApplicationDelegateAdaptor(StatusItemController.self) private var statusItemController
     @StateObject private var preferences: PreferencesStore
     @StateObject private var boardStore: BoardStore
     @StateObject private var updateController: UpdateController
+    @StateObject private var settingsNavigation: SettingsNavigation
+    @StateObject private var launchAtLoginController: LaunchAtLoginController
     private let catalog = StationCatalog.bundled
 
     init() {
@@ -23,41 +26,50 @@ struct PlatformApp: App {
         )
         let updates = UpdateController()
         updates.start(automaticallyChecks: preferences.checkForUpdates)
+        let settingsNavigation = SettingsNavigation()
+        let launchAtLoginController = LaunchAtLoginController()
 
         _preferences = StateObject(wrappedValue: preferences)
         _boardStore = StateObject(wrappedValue: BoardStore(api: api, cache: FileBoardCache()))
         _updateController = StateObject(wrappedValue: updates)
+        _settingsNavigation = StateObject(wrappedValue: settingsNavigation)
+        _launchAtLoginController = StateObject(wrappedValue: launchAtLoginController)
+
+        statusItemController.configure(
+            preferences: preferences,
+            boardStore: _boardStore.wrappedValue,
+            catalog: catalog,
+            settingsNavigation: settingsNavigation
+        )
     }
 
     var body: some Scene {
-        MenuBarExtra {
-            RootPopoverView(preferences: preferences, store: boardStore, catalog: catalog)
-        } label: {
-            Group {
-                if let image = AppArtwork.menuBarImage {
-                    Image(nsImage: image)
-                } else {
-                    Image(systemName: "train.side.front.car")
-                }
-            }
-            .accessibilityLabel("Platform departures")
-        }
-        .menuBarExtraStyle(.window)
-
         Settings {
-            SettingsView(preferences: preferences, updates: updateController, catalog: catalog)
+            SettingsView(
+                preferences: preferences,
+                updates: updateController,
+                catalog: catalog,
+                navigation: settingsNavigation,
+                launchAtLogin: launchAtLoginController
+            )
         }
-
-        Window("About Platform", id: "about") {
-            AboutView()
-        }
-        .windowResizability(.contentSize)
     }
 }
 
 @MainActor
 enum AppArtwork {
     static let menuBarImageSize = NSSize(width: 14, height: 18)
+
+    static let appIconImage: NSImage? = {
+        let nested = Bundle.module.url(
+            forResource: "PlatformIcon",
+            withExtension: "png",
+            subdirectory: "Artwork"
+        )
+        let flattened = Bundle.module.url(forResource: "PlatformIcon", withExtension: "png")
+        guard let url = nested ?? flattened else { return nil }
+        return NSImage(contentsOf: url)
+    }()
 
     static let menuBarImage: NSImage? = {
         let nested = Bundle.module.url(

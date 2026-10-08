@@ -6,10 +6,9 @@ struct BoardModeContainerView: View {
     @ObservedObject var preferences: PreferencesStore
     @ObservedObject var store: BoardStore
     let catalog: StationCatalog
+    let openSettingsPage: (SettingsPage) -> Void
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @Environment(\.openSettings) private var openSettings
-    @Environment(\.openWindow) private var openWindow
 
     @State private var selectorVisibility: ViewSelectorVisibility = .hidden
     @State private var isAddingStation = false
@@ -145,8 +144,8 @@ struct BoardModeContainerView: View {
             }
         }
         Divider()
-        Button("Settings…", systemImage: "gearshape") { openSettings() }
-        Button("About Platform", systemImage: "info.circle") { openWindow(id: "about") }
+        Button("Settings…", systemImage: "gearshape") { openSettingsPage(.general) }
+        Button("About Platform", systemImage: "info.circle") { openSettingsPage(.about) }
         Divider()
         Button("Quit Platform", systemImage: "power") { NSApplication.shared.terminate(nil) }
             .keyboardShortcut("q", modifiers: .command)
@@ -341,7 +340,7 @@ private struct SelectorPanelBridge: NSViewRepresentable {
             panel.collectionBehavior = [.transient, .fullScreenAuxiliary]
             panel.acceptsMouseMovedEvents = true
             panel.ignoresMouseEvents = false
-            panel.hidesOnDeactivate = true
+            panel.hidesOnDeactivate = false
             panel.isReleasedWhenClosed = false
             panel.contentView = SelectorPanelContentView(selection: selection)
             return panel
@@ -378,15 +377,7 @@ private struct SelectorPanelBridge: NSViewRepresentable {
                 center.addObserver(forName: NSWindow.willCloseNotification, object: window, queue: .main) { [weak self] _ in
                     Task { @MainActor [weak self] in self?.invalidateAndDismiss() }
                 },
-                center.addObserver(forName: NSWindow.didResignKeyNotification, object: window, queue: .main) { [weak self] _ in
-                    Task { @MainActor [weak self] in self?.closeForParentDeactivation() }
-                },
             ]
-        }
-
-        private func closeForParentDeactivation() {
-            visibility?.wrappedValue = .hidden
-            dismissPanelImmediately()
         }
 
         private func positionPanel() {
