@@ -52,6 +52,18 @@ enum StatusPanelLayout {
     }
 }
 
+enum BoardPanelAppearance {
+    static let cornerRadius: CGFloat = 10
+
+    @MainActor
+    static func applyRoundedMask(to view: NSView) {
+        view.wantsLayer = true
+        view.layer?.cornerRadius = cornerRadius
+        view.layer?.cornerCurve = .continuous
+        view.layer?.masksToBounds = true
+    }
+}
+
 @MainActor
 final class StatusItemController: NSObject, NSApplicationDelegate {
     private var preferences: PreferencesStore?
@@ -174,7 +186,7 @@ final class StatusItemController: NSObject, NSApplicationDelegate {
     @objc private func showBoard() {
         guard let preferences, let boardStore, let catalog else { return }
         let panel = boardPanel ?? makeBoardPanel()
-        panel.contentView = NSHostingView(
+        let hostingView = NSHostingView(
             rootView: RootPopoverView(
                 preferences: preferences,
                 store: boardStore,
@@ -184,6 +196,8 @@ final class StatusItemController: NSObject, NSApplicationDelegate {
                 }
             )
         )
+        BoardPanelAppearance.applyRoundedMask(to: hostingView)
+        panel.contentView = hostingView
         panel.setContentSize(initialBoardSize(preferences: preferences, store: boardStore))
         positionBoardPanel()
         boardStore.appear(

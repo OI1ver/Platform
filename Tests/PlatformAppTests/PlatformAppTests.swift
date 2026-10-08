@@ -220,6 +220,19 @@ final class StatusPanelLayoutTests: XCTestCase {
 }
 
 @MainActor
+final class BoardPanelAppearanceTests: XCTestCase {
+    func testBoardContentUsesContinuousRoundedMask() {
+        let view = NSView(frame: CGRect(x: 0, y: 0, width: 488, height: 315))
+
+        BoardPanelAppearance.applyRoundedMask(to: view)
+
+        XCTAssertEqual(view.layer?.cornerRadius, 10)
+        XCTAssertEqual(view.layer?.cornerCurve, .continuous)
+        XCTAssertEqual(view.layer?.masksToBounds, true)
+    }
+}
+
+@MainActor
 final class StatusContextMenuTests: XCTestCase {
     func testRightClickMenuExposesExpectedApplicationActions() {
         let menu = StatusItemController().makeContextMenu()
