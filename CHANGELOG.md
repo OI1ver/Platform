@@ -7,6 +7,29 @@ The exact source tree is retained from 0.2.4 onward. Earlier entries are a
 conservative reconstruction from preserved application archives and development
 records, not a claim that their original source snapshots are available.
 
+## [0.2.5] - 2026-10-08
+
+### Added
+
+- A right-click menu on the menu-bar icon for opening or refreshing the board,
+  opening Settings or About, restarting Platform and quitting the app.
+
+### Improved
+
+- Board placement now follows the menu-bar icon consistently and remains stable
+  as the board changes size.
+- Settings navigation has clearer spacing, and About uses the current Platform
+  artwork.
+- Login-item status now explains when macOS approval is required.
+
+### Fixed
+
+- Restored the board's rounded corners when using the custom status panel.
+- Fixed cases where the board, Settings or About would fail to open after panel
+  focus and dismissal changes.
+- Fixed Launch at Login registration and state reporting.
+- Updated Worker tooling and resolved its known development dependency issue.
+
 ## [0.2.4] - 2026-09-24
 
 First release with a retained, publishable source tree.
@@ -75,6 +98,7 @@ First release with a retained, publishable source tree.
 
 - Initial preserved technical build of the macOS menu-bar departure board.
 
+[0.2.5]: https://github.com/Tandemry/Platform/releases/tag/v0.2.5
 [0.2.4]: https://github.com/Tandemry/Platform/releases/tag/v0.2.4
 [0.2.3]: https://github.com/Tandemry/Platform/releases/tag/v0.2.3
 [0.2.2]: https://github.com/Tandemry/Platform/releases/tag/v0.2.2

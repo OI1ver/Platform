@@ -61,8 +61,8 @@ jobs:
       - name: Validate repository metadata
         run: |
           source release/version.env
-          test "$PLATFORM_VERSION" = "0.2.4"
-          test "$PLATFORM_BUILD" = "15"
+          test "$PLATFORM_VERSION" = "0.2.5"
+          test "$PLATFORM_BUILD" = "16"
           plutil -lint release/Info.plist
           zsh -n scripts/package-app.sh
           zsh -n scripts/verify-release.sh
