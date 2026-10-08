@@ -44,7 +44,7 @@ public_key=$(/usr/libexec/PlistBuddy -c "Print :SUPublicEDKey" "$plist_path")
 [[ "$api_url" == https://* ]]
 [[ "$bundle_icon" == "Platform.icns" ]]
 [[ "$agent_app" == "true" ]]
-[[ "$feed_url" == "https://github.com/OI1ver/Platform/releases/latest/download/appcast.xml" ]]
+[[ "$feed_url" == "https://github.com/Tandemry/Platform/releases/latest/download/appcast.xml" ]]
 [[ -n "$public_key" && "$public_key" != "REPLACE_WITH_SPARKLE_PUBLIC_KEY" ]]
 
 menu_icon=$(find "$app_path/Contents/Resources" -name 'PlatformBarIcon.png' -print -quit)

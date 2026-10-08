@@ -38,7 +38,7 @@
     <key>SUEnableAutomaticChecks</key>
     <true/>
     <key>SUFeedURL</key>
-	<string>https://github.com/OI1ver/Platform/releases/latest/download/appcast.xml</string>
+	<string>https://github.com/Tandemry/Platform/releases/latest/download/appcast.xml</string>
     <key>SUPublicEDKey</key>
 	<string>QNhpsRg1xxMKsSElCh8mupfE6xY/rxWzeDfE9FZznm8=</string>
 </dict>

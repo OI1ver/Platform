@@ -1,6 +1,6 @@
 <img width="1440" height="456" alt="Tree (3)" src="https://github.com/user-attachments/assets/11becbb1-0318-4273-9658-fc3603fed692" />
 
-[![Latest release](https://img.shields.io/github/v/release/OI1ver/Platform?display_name=tag)](https://github.com/OI1ver/Platform/releases/latest)
+[![Latest release](https://img.shields.io/github/v/release/Tandemry/Platform?display_name=tag)](https://github.com/Tandemry/Platform/releases/latest)
 [![macOS 14+](https://img.shields.io/badge/macOS-14%2B-black)](docs/INSTALLATION.md)
 [![MIT licence](https://img.shields.io/badge/licence-MIT-green)](LICENSE)
 
@@ -11,9 +11,9 @@ Open it whenever you need it, choose your station and immediately see the next t
 ---
 <img width="1578" height="181" alt="dowload (1)" src="https://github.com/user-attachments/assets/2242f718-dcef-49bc-9157-c04af0688635" />
 
-**Download the [latest version of Platform for macOS](https://github.com/OI1ver/Platform/releases/latest).**
+**Download the [latest version of Platform for macOS](https://github.com/Tandemry/Platform/releases/latest).**
 Platform requires macOS 14 or later.
-1. Download and unzip the [latest release](https://github.com/OI1ver/Platform/releases/latest).
+1. Download and unzip the [latest release](https://github.com/Tandemry/Platform/releases/latest).
 2. Move `Platform.app` into your Applications folder.
 3. Control-click Platform and select **Open** the first time you launch it.
 
@@ -37,16 +37,16 @@ Platform only refreshes while its board is open.
 ---
 <img width="1578" height="181" alt="dowload (3)" src="https://github.com/user-attachments/assets/588606b0-a3f5-4a64-b715-d038628f6d1c" />
 
-Platform can check for new releases and install updates from [this GitHub repository](https://github.com/OI1ver/Platform). Updates are cryptographically signed so the app can verify that they are genuine before installing them.
+Platform can check for new releases and install updates from [this GitHub repository](https://github.com/Tandemry/Platform). Updates are cryptographically signed so the app can verify that they are genuine before installing them.
 
 Because the current release is an unsigned beta, it is intended for people who are comfortable installing software directly from GitHub.
 
 ---
 <img width="1578" height="181" alt="dowload (4)" src="https://github.com/user-attachments/assets/9b64a120-16ef-49e9-81fc-968f769128bc" />
 
-If something is not working correctly, **[report a problem](https://github.com/OI1ver/Platform/issues/new/choose).**
+If something is not working correctly, **[report a problem](https://github.com/Tandemry/Platform/issues/new/choose).**
 
-Ideas and feature suggestions are welcome too. Before opening a new request, please check the [existing issues](https://github.com/OI1ver/Platform/issues) to see whether it has already been discussed.
+Ideas and feature suggestions are welcome too. Before opening a new request, please check the [existing issues](https://github.com/Tandemry/Platform/issues) to see whether it has already been discussed.
 
 Security concerns should be reported privately by following the instructions in [SECURITY.md](SECURITY.md).
 

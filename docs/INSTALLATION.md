@@ -6,7 +6,7 @@ distributed through the Mac App Store and is not yet notarised by Apple.
 ## Install
 
 1. Download `Platform-macOS-universal-0.2.4.zip` from the
-   [latest GitHub release](https://github.com/OI1ver/Platform/releases/latest).
+   [latest GitHub release](https://github.com/Tandemry/Platform/releases/latest).
 2. Open the ZIP and move `Platform.app` to your Applications folder.
 3. In Finder, control-click `Platform.app` and choose **Open**.
 4. Confirm **Open** in the macOS warning.
