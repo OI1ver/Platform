@@ -61,6 +61,42 @@ final class BoardPresentationTests: XCTestCase {
         XCTAssertEqual(BoardPresentation.displayStatus(for: departure), "Exp 14:08")
     }
 
+    func testDelayedStatusShowsExpectedTimeEvenWhenDelayReasonIsAvailable() {
+        let departure = Departure(
+            id: "service-delayed-with-estimate",
+            scheduledDeparture: "14:00",
+            expectedDeparture: "14:08",
+            destinations: [StationReference(crs: "BTN", name: "Brighton")],
+            platform: "1",
+            carriageCount: nil,
+            operatorName: "Southern",
+            status: .delayed,
+            statusText: "Expected 14:08",
+            delayReason: "This service has been delayed by a signalling fault",
+            cancellationReason: nil
+        )
+
+        XCTAssertEqual(BoardPresentation.displayStatus(for: departure), "Exp 14:08")
+    }
+
+    func testDelayedStatusFallsBackToDelayedWithoutExpectedTime() {
+        let departure = Departure(
+            id: "service-delayed-without-estimate",
+            scheduledDeparture: "14:00",
+            expectedDeparture: "14:00",
+            destinations: [StationReference(crs: "BTN", name: "Brighton")],
+            platform: "1",
+            carriageCount: nil,
+            operatorName: "Southern",
+            status: .delayed,
+            statusText: "Delayed",
+            delayReason: "This service has been delayed by a signalling fault",
+            cancellationReason: nil
+        )
+
+        XCTAssertEqual(BoardPresentation.displayStatus(for: departure), "Delayed")
+    }
+
     func testLongFormationsFitWithinTickerWidth() {
         XCTAssertEqual(CarriageLayout.visibleCount(for: 12), 12)
         let occupiedWidth = CarriageLayout.boxWidth(for: 12) * 12
@@ -290,6 +326,14 @@ final class MultiViewPresentationTests: XCTestCase {
         XCTAssertEqual(BoardDisplayMode.display.boardHeight, 150)
         XCTAssertEqual(BoardDisplayMode.extended.boardHeight, 315)
         XCTAssertEqual(BoardDisplayMode.list.boardHeight, 610)
+    }
+
+    func testListStationNoticeUsesReadableBoardTextSize() {
+        XCTAssertEqual(BoardFooterPresentation.listNoticeFontSize, 12)
+        XCTAssertGreaterThan(
+            BoardFooterPresentation.listNoticeFontSize,
+            BoardFooterPresentation.extendedNoticeFontSize
+        )
     }
 
     func testSelectorHasOnlyClosedAndExpandedStates() {

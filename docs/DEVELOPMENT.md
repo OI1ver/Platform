@@ -56,8 +56,8 @@ COPYFILE_DISABLE=1 swift test --scratch-path /tmp/platform-spm-tests
 ```sh
 PLATFORM_API_BASE_URL=https://example.workers.dev \
 PLATFORM_GITHUB_REPOSITORY=Tandemry/Platform \
-PLATFORM_VERSION=0.2.5 \
-PLATFORM_BUILD=16 \
+PLATFORM_VERSION=0.2.6 \
+PLATFORM_BUILD=17 \
 scripts/package-app.sh
 ```
 

@@ -5,7 +5,7 @@ distributed through the Mac App Store and is not yet notarised by Apple.
 
 ## Install
 
-1. Download `Platform-macOS-universal-0.2.5.zip` from the
+1. Download `Platform-macOS-universal-0.2.6.zip` from the
    [latest GitHub release](https://github.com/Tandemry/Platform/releases/latest).
 2. Open the ZIP and move `Platform.app` to your Applications folder.
 3. In Finder, control-click `Platform.app` and choose **Open**.
@@ -21,7 +21,7 @@ sites.
 Each release publishes a SHA-256 checksum. In Terminal, run:
 
 ```sh
-shasum -a 256 ~/Downloads/Platform-macOS-universal-0.2.5.zip
+shasum -a 256 ~/Downloads/Platform-macOS-universal-0.2.6.zip
 ```
 
 The result must exactly match the checksum in that release's notes.

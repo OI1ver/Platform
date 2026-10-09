@@ -7,6 +7,14 @@ The exact source tree is retained from 0.2.4 onward. Earlier entries are a
 conservative reconstruction from preserved application archives and development
 records, not a claim that their original source snapshots are available.
 
+## [0.2.6] - 2026-10-09
+
+### Improved
+
+- Delayed departures now show `Exp HH:mm` whenever National Rail supplies a
+  usable expected time, while retaining the delay explanation underneath.
+- Increased the List view's station-notice text size for clearer readability.
+
 ## [0.2.5] - 2026-10-08
 
 ### Added
@@ -98,6 +106,7 @@ First release with a retained, publishable source tree.
 
 - Initial preserved technical build of the macOS menu-bar departure board.
 
+[0.2.6]: https://github.com/Tandemry/Platform/releases/tag/v0.2.6
 [0.2.5]: https://github.com/Tandemry/Platform/releases/tag/v0.2.5
 [0.2.4]: https://github.com/Tandemry/Platform/releases/tag/v0.2.4
 [0.2.3]: https://github.com/Tandemry/Platform/releases/tag/v0.2.3

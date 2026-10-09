@@ -225,7 +225,7 @@ enum BoardPresentation {
         case .platformChanged:
             return "Platform Chg"
         case .delayed:
-            return departure.delayReason == nil && departure.expectedDeparture != departure.scheduledDeparture
+            return departure.expectedDeparture != departure.scheduledDeparture
                 ? "Exp \(departure.expectedDeparture)"
                 : "Delayed"
         case .unknown:

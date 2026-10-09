@@ -680,6 +680,11 @@ enum ExtendedBoardPresentation {
     }
 }
 
+enum BoardFooterPresentation {
+    static let extendedNoticeFontSize: CGFloat = 10.5
+    static let listNoticeFontSize: CGFloat = 12
+}
+
 private struct ExtendedDepartureRow: View {
     let number: Int
     let departure: Departure
@@ -963,7 +968,9 @@ private struct BoardNoticeFooter: View {
                 ink: ink,
                 viewportWidth: 464,
                 fontName: DepartureBoardFont.heavyName,
-                fontSize: style == .extended ? 10.5 : 9
+                fontSize: style == .extended
+                    ? BoardFooterPresentation.extendedNoticeFontSize
+                    : BoardFooterPresentation.listNoticeFontSize
             )
                 .frame(height: style == .extended ? 25 : 34)
                 .padding(.horizontal, 12)
